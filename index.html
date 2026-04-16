@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Estado del arte: monitoreo IoT de material particulado PM2.5 con ESP32, SDS011 y ThingSpeak. Trabajo de grado UTS 2026." />
+  <title>Estado del Arte · IoT PM₂.₅ · UTS 2026</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══════════════════════════════════════
+       CONTROLS BAR
+  ════════════════════════════════════════ -->
+  <div class="controls-bar">
+    <div class="search-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M9 3a6 6 0 100 12A6 6 0 009 3zm-8 6a8 8 0 1114.32 4.906l4.387 4.387a1 1 0 01-1.414 1.414l-4.386-4.386A8 8 0 011 9z" clip-rule="evenodd"/>
+      </svg>
+      <input
+        type="search"
+        id="search-input"
+        placeholder="Buscar estudio, sensor, plataforma… (⌘K)"
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </div>
+
+    <div class="controls-right">
+      <span class="results-count" id="results-count">6 de 6 estudios</span>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Modo oscuro" title="Cambiar tema">🌙</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       FILTER CHIPS
+  ════════════════════════════════════════ -->
+  <div class="filter-bar" role="group" aria-label="Filtrar por tecnología">
+    <button class="filter-chip active" data-filter="all">Todos</button>
+    <button class="filter-chip" data-filter="ESP32">ESP32</button>
+    <button class="filter-chip" data-filter="SDS011">SDS011</button>
+    <button class="filter-chip" data-filter="ThingSpeak">ThingSpeak</button>
+    <button class="filter-chip" data-filter="MQTT">MQTT</button>
+    <button class="filter-chip" data-filter="Simulación">Simulación</button>
+    <button class="filter-chip" data-filter="ANN / ML">ML / ANN</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════ -->
+  <header class="header">
+    <div class="header-tag">Estado del arte · Trabajo de grado UTS 2026</div>
+    <h1>Monitoreo IoT de material particulado PM<sub>2.5</sub><br>con ESP32, SDS011 y ThingSpeak</h1>
+    <p class="header-sub">
+      Síntesis de antecedentes académicos y tecnológicos que sustentan la simulación de un nodo IoT
+      para vigilancia ambiental ciudadana en zonas de cocción callejera.
+    </p>
+    <div class="header-pills">
+      <span class="pill">IoT ambiental</span>
+      <span class="pill">Microelectrónica de bajo costo</span>
+      <span class="pill">Telemetría en la nube</span>
+      <span class="pill">Calidad del aire urbano</span>
+      <span class="pill">Simulación Wokwi</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════
+       TIMELINE
+  ════════════════════════════════════════ -->
+  <p class="section-label">Línea de tiempo de antecedentes</p>
+  <div class="timeline" role="list" aria-label="Cronología de estudios">
+
+    <div class="tl-item" role="listitem">
+      <div class="tl-dot" style="background:#1a3a5c;"></div>
+      <div class="tl-line"></div>
+      <div class="tl-year">2019</div>
+      <div class="tl-desc">Primeros nodos ESP32 + SDS011 sin conectividad a la nube</div>
+    </div>
+
+    <div class="tl-item" role="listitem">
+      <div class="tl-dot" style="background:#2a5c8c;"></div>
+      <div class="tl-line"></div>
+      <div class="tl-year">2021</div>
+      <div class="tl-desc">Integración ThingSpeak + ESP32 para PM2.5 y PM10</div>
+    </div>
+
+    <div class="tl-item" role="listitem">
+      <div class="tl-dot" style="background:#3a7cbf;"></div>
+      <div class="tl-line"></div>
+      <div class="tl-year">2022</div>
+      <div class="tl-desc">Prototipos IoT con MQTT y corrección de humedad</div>
+    </div>
+
+    <div class="tl-item" role="listitem">
+      <div class="tl-dot" style="background:#4a9ce0;"></div>
+      <div class="tl-line"></div>
+      <div class="tl-year">2023</div>
+      <div class="tl-desc">Wokwi consolida simulación de ESP32 en educación</div>
+    </div>
+
+    <div class="tl-item" role="listitem">
+      <div class="tl-dot" style="background:#5ab8ff;"></div>
+      <div class="tl-line"></div>
+      <div class="tl-year">2024</div>
+      <div class="tl-desc">Redes multi-nodo con IA para predicción de calidad</div>
+    </div>
+
+    <div class="tl-item" role="listitem">
+      <div class="tl-dot" style="background:#7dd3fc; box-shadow: 0 0 0 2px #059669;"></div>
+      <div class="tl-year" style="color:#059669;">2026</div>
+      <div class="tl-desc" style="color:#059669; font-weight:600;">Este proyecto</div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       STUDY CARDS
+  ════════════════════════════════════════ -->
+  <p class="section-label">Estudios y proyectos relacionados</p>
+  <div class="cards-grid" id="cards-grid">
+
+    <!-- ── Card 1 ── -->
+    <article class="study-card" data-tags="ESP32,SDS011,ThingSpeak,MQTT">
+      <div class="card-accent" style="background:#2563eb;"></div>
+      <div class="card-year" style="color:#2563eb;">2022 · Latinoamérica</div>
+      <div class="card-title">Prototipo IoT para monitoreo de MP en espacios reducidos con ESP32 y ThingSpeak</div>
+      <div class="card-authors">Gómez-Meza, J. S., Matute-Arias, S. V. &amp; Negrete Peña, T. J.</div>
+      <div class="card-body">
+        Diseño experimental con cuatro módulos de censado que integran el sensor Nova SDS011 y el
+        microcontrolador ESP32. Los datos se transmiten mediante protocolo MQTT a ThingSpeak para
+        visualización remota. Confirma la viabilidad de hardware de código abierto para telemetría
+        ambiental ciudadana.
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-blue">ESP32</span>
+        <span class="tag tag-teal">SDS011</span>
+        <span class="tag tag-blue">ThingSpeak</span>
+        <span class="tag tag-amber">MQTT</span>
+      </div>
+      <div class="card-ref">
+        [1] Gómez-Meza, J. S., Matute-Arias, S. V., &amp; Negrete Peña, T. J. (2022). Diseño de un prototipo
+        IoT para el monitoreo de material particulado en espacios reducidos utilizando ESP32 con servidor
+        hospedado en la nube. <em>Sinergia Académica, 4</em>(3), 1–18.
+        <a href="https://doi.org/10.51736/sa.v4i3.58" target="_blank" rel="noopener">doi:10.51736/sa.v4i3.58</a>
+      </div>
+    </article>
+
+    <!-- ── Card 2 ── -->
+    <article class="study-card" data-tags="ESP32,PM2.5 / PM10,Nube IoT,C++ / JSON">
+      <div class="card-accent" style="background:#0891b2;"></div>
+      <div class="card-year" style="color:#0891b2;">2024 · El Salvador</div>
+      <div class="card-title">Red de monitoreo de calidad del aire con ESP32 y plataforma IoT en la nube</div>
+      <div class="card-authors">South Florida Journal of Development</div>
+      <div class="card-body">
+        Implementación de estaciones con sensor PMS5007 y microcontrolador ESP32, con despliegue de datos
+        en pantalla OLED local y plataforma IoT remota. El estudio evidencia que el uso de C++ y protocolos
+        JSON permite desarrollar prototipos de bajo costo con alto desempeño para vigilancia ambiental
+        en tiempo real.
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-blue">ESP32</span>
+        <span class="tag tag-teal">PM2.5 / PM10</span>
+        <span class="tag tag-purple">Nube IoT</span>
+        <span class="tag tag-teal">C++ / JSON</span>
+      </div>
+      <div class="card-ref">
+        [2] South Florida Journal of Development. (2024). Implementación de una red de monitoreo de la calidad
+        del aire. <em>South Florida Journal of Development, 5</em>(7), 1–10. ISSN 2675-5459.
+        <a href="https://ojs.southfloridapublishing.com/ojs/index.php/jdev/article/download/4082/2916/9891" target="_blank" rel="noopener">Ver artículo</a>
+      </div>
+    </article>
+
+    <!-- ── Card 3 ── -->
+    <article class="study-card" data-tags="ANN / ML,ThingSpeak,LTE,ESP32">
+      <div class="card-accent" style="background:#7c3aed;"></div>
+      <div class="card-year" style="color:#7c3aed;">2024 · Ecuador · Ingenius</div>
+      <div class="card-title">Arquitectura IoT para monitoreo de gases contaminantes con validación por Machine Learning</div>
+      <div class="card-authors">Ingenius. Revista de Ciencia y Tecnología, vol. 32</div>
+      <div class="card-body">
+        Arquitectura IoT basada en ESP32 con red LTE para transmisión a ThingSpeak. Introduce validación
+        de datos mediante Red Neuronal Artificial (ANN) logrando R² = 99.2%. Demuestra que la arquitectura
+        de software debe validarse antes del despliegue físico — principio central de este trabajo.
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-purple">ANN / ML</span>
+        <span class="tag tag-blue">ThingSpeak</span>
+        <span class="tag tag-amber">LTE</span>
+        <span class="tag tag-blue">ESP32</span>
+      </div>
+      <div class="card-ref">
+        [3] Ingenius. (2024). Arquitectura de IoT para el monitoreo de emisiones de gases contaminantes de
+        vehículos y su validación a través de Machine Learning. <em>Ingenius. Revista de Ciencia y Tecnología</em>,
+        32, 9–17.
+        <a href="https://www.redalyc.org/journal/5055/505576382001/" target="_blank" rel="noopener">Redalyc</a>
+      </div>
+    </article>
+
+    <!-- ── Card 4 ── -->
+    <article class="study-card" data-tags="Arduino IDE,SDS011,ThingSpeak,HardwareSerial">
+      <div class="card-accent" style="background:#d97706;"></div>
+      <div class="card-year" style="color:#d97706;">2022 · Internacional</div>
+      <div class="card-title">Sistema de monitoreo de calidad del aire basado en ESP32 con visualización en ThingSpeak</div>
+      <div class="card-authors">Electronics For You / Hackster.io</div>
+      <div class="card-body">
+        Sistema ESP32 + SDS011 + BME280 con corrección de humedad para lecturas de PM2.5 y PM10.
+        Programado en Arduino IDE (C++) con HardwareSerial para compatibilidad SDS011–ESP32. Los datos
+        se publican automáticamente en canales de ThingSpeak. Referente técnico directo para la arquitectura
+        de este proyecto.
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-amber">Arduino IDE</span>
+        <span class="tag tag-teal">SDS011</span>
+        <span class="tag tag-blue">ThingSpeak</span>
+        <span class="tag tag-teal">HardwareSerial</span>
+      </div>
+      <div class="card-ref">
+        [4] Electronics For You. (2026, febrero 3). ESP32-based Air Quality Monitoring System.
+        <em>Electronics For You</em>.
+        <a href="https://www.electronicsforu.com/electronics-projects/esp32-based-air-quality-monitoring-system" target="_blank" rel="noopener">Ver artículo</a>
+      </div>
+    </article>
+
+    <!-- ── Card 5 ── -->
+    <article class="study-card" data-tags="Simulación,ESP32 virtual,WiFi emulado,Educación STEM">
+      <div class="card-accent" style="background:#059669;"></div>
+      <div class="card-year" style="color:#059669;">2023 · Herramienta de simulación</div>
+      <div class="card-title">Wokwi: simulador avanzado para ESP32, Arduino y sistemas IoT con WiFi emulado</div>
+      <div class="card-authors">Wokwi.com · CNX Software</div>
+      <div class="card-body">
+        Plataforma de simulación en línea compatible con C++ y MicroPython que emula WiFi, UART,
+        comunicación MQTT y múltiples sensores. Validada educativamente a nivel internacional.
+        Permite detectar fallos de arquitectura antes del despliegue físico sin riesgo de dañar
+        componentes reales.
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-teal">Simulación</span>
+        <span class="tag tag-blue">ESP32 virtual</span>
+        <span class="tag tag-teal">WiFi emulado</span>
+        <span class="tag tag-amber">Educación STEM</span>
+      </div>
+      <div class="card-ref">
+        [5] Aufranc, J.-L. (2023, abril 10). Wokwi – An Arduino, Raspberry Pi Pico, and ESP32 board simulator.
+        <em>CNX Software</em>.
+        <a href="https://www.cnx-software.com/2023/04/10/wokwi-arduino-raspberry-pi-pico-esp32-board-simulator/" target="_blank" rel="noopener">CNX Software</a>
+      </div>
+    </article>
+
+    <!-- ── Card 6 ── -->
+    <article class="study-card" data-tags="AQI,SDS011,Adafruit IO,DHT11">
+      <div class="card-accent" style="background:#dc2626;"></div>
+      <div class="card-year" style="color:#dc2626;">2022 · India / Global</div>
+      <div class="card-title">Sistema IoT de índice de calidad del aire: PM2.5, PM10 y CO con ESP32</div>
+      <div class="card-authors">Circuit Digest · CircuitDigest.com</div>
+      <div class="card-body">
+        Integración de SDS011, MQ-7 y DHT11 con ESP32 para cálculo de AQI. Datos publicados en
+        Adafruit IO y procesados con las bibliotecas SDS011, Adafruit_GFX y Adafruit_MQTT. Demuestra
+        la interoperabilidad de sensores heterogéneos en plataformas de nube abiertas bajo Arduino IDE.
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-coral">AQI</span>
+        <span class="tag tag-teal">SDS011</span>
+        <span class="tag tag-blue">Adafruit IO</span>
+        <span class="tag tag-amber">DHT11</span>
+      </div>
+      <div class="card-ref">
+        [6] Circuit Digest. (2022). IoT Based Air Quality Index Monitoring System – Monitor PM2.5, PM10,
+        and CO using ESP32. <em>Circuit Digest</em>.
+        <a href="https://circuitdigest.com/microcontroller-proejcts/iot-based-air-quality-index-monitoring-system-measure-pm25-pm10-co-using-esp32" target="_blank" rel="noopener">Ver artículo</a>
+      </div>
+    </article>
+
+    <!-- No results message -->
+    <div id="no-results" aria-live="polite">
+      No se encontraron estudios para ese criterio de búsqueda.
+    </div>
+
+  </div><!-- /cards-grid -->
+
+  <!-- ═══════════════════════════════════════
+       COMPARISON TABLE
+  ════════════════════════════════════════ -->
+  <p class="section-label">Comparación de antecedentes vs. este proyecto</p>
+  <div class="compare-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%">Estudio</th>
+          <th style="width:12%">Sensor</th>
+          <th style="width:13%">Plataforma</th>
+          <th style="width:14%">Simulación previa</th>
+          <th style="width:15%">Microentorno urbano</th>
+          <th>Aporte diferencial</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gómez-Meza et al. (2022)</td>
+          <td>SDS011</td>
+          <td>ThingSpeak</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td>4 nodos MQTT, espacios cerrados</td>
+        </tr>
+        <tr>
+          <td>SFJD (2024)</td>
+          <td>PMS5007</td>
+          <td>IoT Cloud</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td>Arquitectura multi-nodo escalable</td>
+        </tr>
+        <tr>
+          <td>Ingenius (2024)</td>
+          <td>DHT22/MQ</td>
+          <td>ThingSpeak</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td>Validación con ANN, R²=99.2%</td>
+        </tr>
+        <tr>
+          <td>EFY / Hackster (2022)</td>
+          <td>SDS011</td>
+          <td>ThingSpeak</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td>Corrección humedad, TFT display</td>
+        </tr>
+        <tr>
+          <td>Wokwi (2023)</td>
+          <td>Virtual</td>
+          <td>—</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="cross">✗</span></td>
+          <td>Simulación educativa ESP32 + WiFi</td>
+        </tr>
+        <tr class="highlight">
+          <td><strong>Este proyecto (2026)</strong></td>
+          <td><strong>SDS011</strong></td>
+          <td><strong>ThingSpeak</strong></td>
+          <td><span class="check">✓</span> Wokwi</td>
+          <td><span class="check">✓</span> Puestos BGA</td>
+          <td>Simulación completa ESP32 + SDS011 + ThingSpeak antes del despliegue físico</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       GAP + CONTRIBUTION
+  ════════════════════════════════════════ -->
+  <div class="two-col">
+    <div class="box-gap">
+      <div class="box-title">⚠ Vacíos identificados en la literatura</div>
+      <div class="list-item">
+        <span class="dot-amber">◆</span>
+        <span>Ningún estudio previo combina simulación en Wokwi con SDS011 + ThingSpeak antes del despliegue físico.</span>
+      </div>
+      <div class="list-item">
+        <span class="dot-amber">◆</span>
+        <span>Los antecedentes no focalizan microentornos de cocción callejera con biomasa en ciudades latinoamericanas.</span>
+      </div>
+      <div class="list-item">
+        <span class="dot-amber">◆</span>
+        <span>Las estaciones macro de calidad del aire no capturan concentraciones a nivel de calle donde el PM₂.₅ puede ser significativamente mayor.</span>
+      </div>
+      <div class="list-item">
+        <span class="dot-amber">◆</span>
+        <span>La ausencia de validación previa en los prototipos existentes genera fallos frecuentes por arquitectura de software no probada.</span>
+      </div>
+    </div>
+
+    <div class="box-contrib">
+      <div class="box-title">✅ Aporte de este proyecto</div>
+      <div class="list-item">
+        <span class="dot-green">◆</span>
+        <span>Primera simulación documentada del sistema ESP32 + SDS011 + ThingSpeak en Wokwi aplicada a puestos de comida de Bucaramanga.</span>
+      </div>
+      <div class="list-item">
+        <span class="dot-green">◆</span>
+        <span>Validación de la arquitectura de software en la nube antes del despliegue, reduciendo riesgo de fallos y costos de hardware.</span>
+      </div>
+      <div class="list-item">
+        <span class="dot-green">◆</span>
+        <span>Modelo técnico replicable y de bajo costo que democratiza la vigilancia ambiental ciudadana en microentornos urbanos.</span>
+      </div>
+      <div class="list-item">
+        <span class="dot-green">◆</span>
+        <span>Refuerza la línea de investigación IoT de la UTS con datos ambientales localizados de alto impacto para la salud pública.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       REFERENCES
+  ════════════════════════════════════════ -->
+  <div class="ref-box">
+    <div class="ref-title">Referencias bibliográficas</div>
+
+    <div class="ref-item">
+      <span class="ref-num">[1]</span>
+      Gómez-Meza, J. S., Matute-Arias, S. V., &amp; Negrete Peña, T. J. (2022). Diseño de un prototipo IoT
+      para el monitoreo de material particulado en espacios reducidos utilizando ESP32 con servidor hospedado
+      en la nube. <em>Sinergia Académica, 4</em>(3), 1–18.
+      <a href="https://doi.org/10.51736/sa.v4i3.58" target="_blank" rel="noopener">doi:10.51736/sa.v4i3.58</a>
+    </div>
+
+    <div class="ref-item">
+      <span class="ref-num">[2]</span>
+      South Florida Journal of Development. (2024). Implementación de una red de monitoreo de la calidad del aire.
+      <em>South Florida Journal of Development, 5</em>(7), 1–10. ISSN 2675-5459.
+      <a href="https://ojs.southfloridapublishing.com/ojs/index.php/jdev/article/download/4082/2916/9891" target="_blank" rel="noopener">Ver artículo</a>
+    </div>
+
+    <div class="ref-item">
+      <span class="ref-num">[3]</span>
+      Ingenius. (2024). Arquitectura de IoT para el monitoreo de emisiones de gases contaminantes de vehículos
+      y su validación a través de Machine Learning. <em>Ingenius. Revista de Ciencia y Tecnología</em>, 32, 9–17.
+      <a href="https://www.redalyc.org/journal/5055/505576382001/html/" target="_blank" rel="noopener">Redalyc</a>
+    </div>
+
+    <div class="ref-item">
+      <span class="ref-num">[4]</span>
+      Electronics For You. (2026, febrero 3). ESP32-based air quality monitoring system. <em>Electronics For You</em>.
+      <a href="https://www.electronicsforu.com/electronics-projects/esp32-based-air-quality-monitoring-system" target="_blank" rel="noopener">Ver artículo</a>
+    </div>
+
+    <div class="ref-item">
+      <span class="ref-num">[5]</span>
+      Aufranc, J.-L. (2023, abril 10). Wokwi – An Arduino, Raspberry Pi Pico, and ESP32 board simulator.
+      <em>CNX Software</em>.
+      <a href="https://www.cnx-software.com/2023/04/10/wokwi-arduino-raspberry-pi-pico-esp32-board-simulator/" target="_blank" rel="noopener">CNX Software</a>
+    </div>
+
+    <div class="ref-item">
+      <span class="ref-num">[6]</span>
+      Circuit Digest. (2022). IoT based air quality index monitoring system – Monitor PM2.5, PM10, and CO using ESP32.
+      <em>Circuit Digest</em>.
+      <a href="https://circuitdigest.com/microcontroller-proejcts/iot-based-air-quality-index-monitoring-system-measure-pm25-pm10-co-using-esp32" target="_blank" rel="noopener">Circuit Digest</a>
+    </div>
+
+    <div class="ref-item">
+      <span class="ref-num">[7]</span>
+      Organización Mundial de la Salud. (2006). <em>Guías de calidad del aire de la OMS relativas al material
+      particulado, el ozono, el dióxido de nitrógeno y el dióxido de azufre: Actualización mundial 2005</em>
+      (N.° WHO/SDE/PHE/OEH/06.02). Ginebra: OMS.
+      <a href="https://apps.who.int/iris/bitstream/handle/10665/69478/WHO_SDE_PHE_OEH_06.02_spa.pdf" target="_blank" rel="noopener">OMS PDF</a>
+    </div>
+
+    <div class="ref-item">
+      <span class="ref-num">[8]</span>
+      MathWorks. (s.f.). <em>ThingSpeak documentation</em>. MathWorks.
+      <a href="https://www.mathworks.com/help/thingspeak/" target="_blank" rel="noopener">docs.mathworks.com</a>
+    </div>
+
+    <div class="ref-item">
+      <span class="ref-num">[9]</span>
+      Wokwi. (2023). <em>Wokwi – World's most advanced ESP32 simulator</em> [Plataforma de simulación].
+      <a href="https://wokwi.com/" target="_blank" rel="noopener">wokwi.com</a>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- Scroll to top button -->
+<button id="scroll-top" aria-label="Volver arriba" title="Volver arriba">↑</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>
